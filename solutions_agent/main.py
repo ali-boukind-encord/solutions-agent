@@ -18,6 +18,17 @@ def _print_box(title: str, lines: list[str]) -> None:
     print(border)
 
 
+def _print_attribute(attr, indent: int = 4) -> None:
+    """Print an attribute and its options, recursing into nested attributes."""
+    pad = " " * indent
+    print(f"{pad}{attr.name} ({attr.attribute_type})")
+    for i, opt in enumerate(attr.options):
+        connector = "└─" if i == len(attr.options) - 1 else "├─"
+        print(f"{pad}  {connector} {opt.label}")
+        for nested in getattr(opt, "nested_attributes", []):
+            _print_attribute(nested, indent=indent + 6)
+
+
 def _print_plan_preview(plan) -> None:
     """Print a rich confirmation preview of the demo plan."""
     # Header
@@ -33,13 +44,17 @@ def _print_plan_preview(plan) -> None:
 
     # Ontology preview
     print("\nOntology Structure:")
-    for cls in plan.classifications:
-        for attr in cls.attributes:
-            print(f"  Classification: {cls.name}")
-            print(f"    Attribute: {attr.name} ({attr.attribute_type})")
-            for i, opt in enumerate(attr.options):
-                connector = "└─" if i == len(attr.options) - 1 else "├─"
-                print(f"      {connector} {opt.label}")
+    if plan.objects:
+        print("  Objects:")
+        for obj in plan.objects:
+            print(f"    [{obj.shape}] {obj.name}")
+            for attr in obj.attributes:
+                _print_attribute(attr, indent=6)
+        print()
+    if plan.classifications:
+        print("  Classifications:")
+        for cls in plan.classifications:
+            _print_attribute(cls.attribute, indent=4)
         print()
 
     # Example file preview
@@ -128,6 +143,16 @@ def main() -> None:
         sys.exit(1)
     print()
 
+    context_path = input("Path to context file (.txt, optional - press Enter to skip): ").strip()
+    context = ""
+    if context_path:
+        context_file = Path(context_path).expanduser()
+        if not context_file.exists():
+            print(f"Error: File not found: {context_file}")
+            sys.exit(1)
+        context = context_file.read_text()
+    print()
+
     num_files_str = input("Number of synthetic files to generate [10]: ").strip()
     num_files = int(num_files_str) if num_files_str else 10
     if num_files < 1 or num_files > 50:
@@ -141,7 +166,7 @@ def main() -> None:
     print("Analyzing solution script and generating demo plan...")
     print("(This may take 15-30 seconds)\n")
 
-    plan = generate_demo_plan(solution_script, num_files)
+    plan = generate_demo_plan(solution_script, num_files, context=context)
 
     # --- Step 3: Rich confirmation preview ---
     _print_plan_preview(plan)
@@ -156,7 +181,7 @@ def main() -> None:
             sys.exit(0)
         elif choice in ("r", "regenerate"):
             print("\nRegenerating plan...\n")
-            plan = generate_demo_plan(solution_script, num_files)
+            plan = generate_demo_plan(solution_script, num_files, context=context)
             _print_plan_preview(plan)
         else:
             print("Please enter Y, n, or regenerate.")

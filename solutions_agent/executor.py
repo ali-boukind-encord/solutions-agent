@@ -6,9 +6,27 @@ from pathlib import Path
 from encord.user_client import EncordUserClient
 from encord.objects.ontology_structure import OntologyStructure
 from encord.objects.attributes import RadioAttribute, ChecklistAttribute, TextAttribute
+from encord.objects.common import Shape
 from encord.orm.dataset import StorageLocation
 
-from .schemas import DemoPlan
+from .schemas import DemoPlan, OntologyAttribute, NestedAttribute
+
+
+SHAPE_MAP = {
+    "bounding_box": Shape.BOUNDING_BOX,
+    "polygon": Shape.POLYGON,
+    "polyline": Shape.POLYLINE,
+    "point": Shape.POINT,
+    "rotatable_bounding_box": Shape.ROTATABLE_BOUNDING_BOX,
+    "bitmask": Shape.BITMASK,
+    "text": Shape.TEXT,
+}
+
+ATTRIBUTE_TYPE_MAP = {
+    "radio": RadioAttribute,
+    "checklist": ChecklistAttribute,
+    "text": TextAttribute,
+}
 
 
 @dataclass
@@ -51,13 +69,49 @@ def _get_client() -> EncordUserClient:
     )
 
 
+def _add_attribute(parent, attr_spec: OntologyAttribute):
+    """Add a top-level attribute (radio/checklist/text) to an object or classification.
+
+    For radio attributes, options can have one level of nested attributes.
+    """
+    attr_cls = ATTRIBUTE_TYPE_MAP[attr_spec.attribute_type]
+    attribute = parent.add_attribute(
+        attr_cls,
+        attr_spec.name,
+        required=attr_spec.required,
+    )
+    if attr_spec.attribute_type == "radio":
+        for option_spec in attr_spec.options:
+            option = attribute.add_option(option_spec.label)
+            for nested_attr_spec in option_spec.nested_attributes:
+                _add_nested_attribute(option, nested_attr_spec)
+    elif attr_spec.attribute_type == "checklist":
+        for option_spec in attr_spec.options:
+            attribute.add_option(option_spec.label)
+    return attribute
+
+
+def _add_nested_attribute(option, attr_spec: NestedAttribute):
+    """Add a nested attribute (leaf level) to a NestableOption."""
+    attr_cls = ATTRIBUTE_TYPE_MAP[attr_spec.attribute_type]
+    attribute = option.add_nested_attribute(
+        attr_cls,
+        attr_spec.name,
+        required=attr_spec.required,
+    )
+    if attr_spec.attribute_type in ("radio", "checklist"):
+        for option_spec in attr_spec.options:
+            attribute.add_option(option_spec.label)
+    return attribute
+
+
 def execute_plan(plan: DemoPlan, on_status: callable = None) -> ExecutionResult:
     """Execute a DemoPlan against the Encord SDK.
 
     Sequence:
     1. Create dataset (with backing folder)
     2. Write synthetic files to temp dir, upload via StorageFolder
-    3. Create ontology with classifications
+    3. Create ontology with objects and classifications
     4. Create project linking dataset + ontology
 
     Args:
@@ -114,32 +168,17 @@ def execute_plan(plan: DemoPlan, on_status: callable = None) -> ExecutionResult:
     status("Creating ontology...")
     ontology_structure = OntologyStructure()
 
-    for classification_spec in plan.classifications:
-        classification = ontology_structure.add_classification()
+    # Add objects
+    for obj_spec in plan.objects:
+        shape = SHAPE_MAP[obj_spec.shape]
+        obj = ontology_structure.add_object(name=obj_spec.name, shape=shape)
+        for attr_spec in obj_spec.attributes:
+            _add_attribute(obj, attr_spec)
 
-        for attr_spec in classification_spec.attributes:
-            if attr_spec.attribute_type == "radio":
-                attribute = classification.add_attribute(
-                    RadioAttribute,
-                    attr_spec.name,
-                    required=attr_spec.required,
-                )
-                for option in attr_spec.options:
-                    attribute.add_option(option.label)
-            elif attr_spec.attribute_type == "checklist":
-                attribute = classification.add_attribute(
-                    ChecklistAttribute,
-                    attr_spec.name,
-                    required=attr_spec.required,
-                )
-                for option in attr_spec.options:
-                    attribute.add_option(option.label)
-            elif attr_spec.attribute_type == "text":
-                classification.add_attribute(
-                    TextAttribute,
-                    attr_spec.name,
-                    required=attr_spec.required,
-                )
+    # Add classifications (each has exactly one attribute)
+    for cls_spec in plan.classifications:
+        classification = ontology_structure.add_classification()
+        _add_attribute(classification, cls_spec.attribute)
 
     ontology = client.create_ontology(
         title=plan.naming.ontology_name,
