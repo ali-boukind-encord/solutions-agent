@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "solutions-agent"
+version = "0.1.0"
+description = "Automated Encord demo project setup from sales solution scripts"
+requires-python = ">=3.10"
+dependencies = [
+    "anthropic>=0.43.0",
+    "encord>=0.1.130",
+    "pydantic>=2.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.scripts]
+solutions-agent = "solutions_agent.main:main"

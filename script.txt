@@ -1,0 +1,58 @@
+Type: 1st Demo
+Custom Data: N - would be good to use structured data (ideally emails)
+In scope & modality: Modality is docs - they work with emails, would be good to show them how we render them in html, pdf and text. They specifically mentioned jsons
+Who are we talking to? CTO & Advisor who provides the annotators - he is "Head of Human Annotations"
+Use case? Email sorting (marketing vs important) for CSM teams and others. They also help with email drafting fine tuned to the user's tone.
+
+Metrics (quantifiable justification) -
+
+Fyxer wants to increase annotation accuracy for their 20 fine-tuning use cases.
+Reduce errors in classification (e.g., wrongly categorizing a deal as marketing spam) which could result in lost revenue.
+Improve speed and efficiency of data annotation by replacing manual sheet-based processes.
+Streamline evaluation and QA workflows, reducing time spent on manual validation by founders like Matt.
+Potential reduction in labor costs through automation and workflow optimization.
+
+
+Current State -
+
+Fyxer's annotation team uses Google Sheets.
+Workflows involve manual validation & QA.
+No automated pre-labeling—annotators must copy/paste data.
+Low volume, high iteration use case (not a massive dataset but complex tasks).
+About ~20 different use cases for fine tuning, need to structure that.
+The primary one is to get data out of structured data
+
+Had their own embeddings, but discontinued the initiative which is good as we don't support it for docs.
+
+
+Identified Pain (what is driving change, how acute) -
+
+Current process relies on spreadsheets, making annotation manual and inefficient.
+Accuracy issues—incorrect email classification can lose customers.
+High cognitive load on annotators due to manual workflows.
+Lack of structured validation leads to inconsistent annotations.
+Scalability concerns—as they grow beyond 15 annotators, the current system will break down.
+
+
+Competition (who are we up against) -
+
+Fyxer is evaluating multiple data annotation platforms.
+Albert declined to name specific competitors, but they are actively assessing options.
+Key comparison factors:
+Ease of setting up tasks
+Speed of iteration
+Cost-effectiveness
+Support for structured data extraction from emails.
+
+
+Why Now -
+
+Fyxer is rapidly growing— going from 0 to $3M ARR in a year—and their manual annotation will not support their scale
+They are actively evaluating vendors, meaning this is a live buying opportunity.
+Their data annotation needs are increasing as they expand fine-tuning use cases ~20 now.
+Current inefficiencies (manual sheets, cognitive load) are pressing problems Fyxer wants to solve quickly.
+
+
+Important flags:
+
+Albert is ex-invisible, founder of AI circle, has an annotation workforce and is quite business minded. Need to manage this carefully as he knows a LOT of people in the space.
