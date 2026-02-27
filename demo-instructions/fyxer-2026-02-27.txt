@@ -1,25 +1,27 @@
+FYXER EMAIL SORTING DEMO — SE CHEAT SHEET
+
 CONTEXT
-Fyxer CTO & Head of Human Annotations. They're scaling from 0-$3M ARR, drowning in manual Google Sheets annotation (20 fine-tuning use cases). One misclassified email costs them customers. They need speed, accuracy, structure—fast.
+Talking to CTO & Head of Human Annotations at Fyxer (email AI platform). They're growing fast ($0-$3M ARR in one year) and their annotation process is breaking under manual spreadsheet workflows. They need speed, accuracy, and structured data handling to support 20+ fine-tuning use cases without losing revenue to misclassification.
 
 DEMO FLOW
-1. Load the Fyxer demo project. Show the two sample emails (deal opportunity HTML + marketing promo) to establish relevance immediately.
-2. Render one email in HTML view, then toggle to text/PDF—demonstrate Encord handles all email formats they receive, no copy-paste needed.
-3. Walk the Email Category classification: show how selecting "Important" reveals nested attributes (Type, Urgency, Requires Reply). Emphasize this replaces their chaotic spreadsheet logic.
-4. Highlight the Key Entity text object—show tagging a person ($48K deal mention, dates, monetary values). Explain this feeds fine-tuning datasets automatically.
-5. Complete annotation on deal email. Show "Annotator Notes" (free text) for edge cases. Stress: one QA pass, no validation spreadsheet.
-6. Compare: "In Sheets, this took 8 minutes and lives in 5 places. Here, it's structured, exportable as JSON, and ready for model training."
-7. Close on workflow impact: 15+ annotators → Encord scales. No cognitive load. Consistent taxonomy.
+1. Show the 5 HTML emails in Encord — emphasize how we render emails as clean, readable documents (HTML, PDF, text). Point out how structured data from emails stays intact.
+2. Walk through Email Category classification with nested options (Marketing → Campaign Type + Urgency; Important → Subcategory + Action Required; Spam → Spam Type). Show how nesting reduces cognitive load vs. flat spreadsheets.
+3. Highlight text annotations — have them tag Key Entities (Person Name, Company, Monetary Value, Date, Product) and Action Items (Owner, Priority). Show this extracts structured data automatically.
+4. Demo Tone classification and "Requires Draft Reply" with nested Draft Tone + Reply Priority. Tie this directly to their email-drafting fine-tuning use case.
+5. Open one email with a misclassification risk (the cold outreach marked as deal). Show how Encord's UI catches errors faster than Google Sheets and flags inconsistencies.
+6. Show QA/validation workflow — emphasize speed gains vs. manual validation. Mention automation potential to reduce annotator burden.
+7. Close with volume + accuracy math: fewer annotation errors = no lost deals, faster iterations across 20 use cases.
 
 THINGS TO KEEP IN MIND
-- Albert knows the annotation space well; acknowledge competitive features (ease, speed, structured extraction) without defensive language.
-- Nesting is your superpower here—show how it mirrors decision trees they already use mentally, just captured cleanly.
-- Emphasize JSON export and fine-tuning readiness. They care about downstream model performance, not UI prettiness.
-- Don't overcomplicate. Fyxer is shipping fast; show speed of task setup and annotation, not advanced features.
-- One email should be completed in under 3 minutes to prove efficiency vs. Sheets.
+- Albert knows the annotation space intimately. Be credible: don't oversell, focus on workflow efficiency and structural rigor, not flashy AI claims.
+- Emphasize "text" ontology type — we handle emails natively. Their discontinued embeddings initiative means they want structured, explainable annotations, not black boxes.
+- Nesting is key. Show how it cuts down annotator confusion and improves consistency — directly addresses their "high cognitive load" pain.
+- Avoid spreadsheet comparisons that feel condescending. Instead frame Encord as "built for teams that scale annotation, not teams that scale sheets."
+- They're evaluating multiple vendors right now. Speed of iteration and ease of setup matter more than feature breadth.
 
 INDUSTRY/TECHNICAL CONTEXT
-- Email classification for CSM/revenue teams is high-stakes: revenue leakage from misclassification is quantified ($48K example in email).
-- Fine-tuning workflows benefit from nested, multi-label structure; flat taxonomies lose signal. Encord's ontology mirrors their mental models.
-- They're building tone-aware reply drafting, so capturing tone classification and quality signals feeds that training loop.
-- Structured data extraction (entities, dates, amounts) is their stated gap vs. competitors; text objects solve this without forcing bounding boxes.
-- JSON/structured export is non-negotiable for downstream fine-tuning pipelines; emphasize deterministic output and no manual translation.
+- Email classification is high-stakes: mistagging a deal as spam costs revenue. Fyxer's CSM teams depend on accuracy. Encord's QA workflows reduce this risk.
+- Fine-tuning requires clean, consistent labeled data. 20 use cases means they need flexibility — our nested ontologies and object annotations handle complex, multi-label scenarios better than flat taxonomies.
+- Structured data extraction from emails (entities, amounts, dates, action owners) is foundational for downstream fine-tuning. Text span annotations give them labeled training signals.
+- Tone labeling + draft reply workflows are differentiators for Fyxer's product. Show Encord as the labeling backbone that makes their proprietary AI possible.
+- Scalability red flag: 15 annotators today, but they're hiring. Google Sheets break at scale. Position Encord as their growth enabler.

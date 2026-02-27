@@ -1,3 +1,6 @@
 this project must have a "text" type ontology
 
 we also want to demonstrate nesting optiobns
+
+Generate 5 html files 
+

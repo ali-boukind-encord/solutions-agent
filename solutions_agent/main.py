@@ -126,15 +126,17 @@ def main() -> None:
         print("or ensure ~/data-ingestion-agent/.credentials/dev.env exists.")
         sys.exit(1)
 
-    # --- Step 1: Gather inputs ---
+    # --- Step 1: Gather inputs (hardcoded for demo) ---
     print("=" * 60)
     print("  Encord Solutions Agent - Demo Project Setup")
     print("=" * 60)
     print()
 
+    script_file = Path("script.txt")
+    context_file = Path("context.txt")
+    num_files = 5
+    file_format = "html"
 
-    script_path = input("Path to solution script (.txt file): ").strip()
-    script_file = Path(script_path).expanduser()
     if not script_file.exists():
         print(f"Error: File not found: {script_file}")
         sys.exit(1)
@@ -142,30 +144,13 @@ def main() -> None:
     if not solution_script.strip():
         print("Error: Empty solution script.")
         sys.exit(1)
-    print()
 
-    context_path = input("Path to context file (.txt, optional - press Enter to skip): ").strip()
-    context = ""
-    if context_path:
-        context_file = Path(context_path).expanduser()
-        if not context_file.exists():
-            print(f"Error: File not found: {context_file}")
-            sys.exit(1)
-        context = context_file.read_text()
-    print()
+    context = context_file.read_text() if context_file.exists() else ""
 
-    num_files_str = input("Number of synthetic files to generate [10]: ").strip()
-    num_files = int(num_files_str) if num_files_str else 10
-    if num_files < 1 or num_files > 50:
-        print("Error: Number of files must be between 1 and 50.")
-        sys.exit(1)
-    print()
-
-    file_format_str = input("File format - txt or html [txt]: ").strip().lower()
-    file_format = file_format_str if file_format_str else "txt"
-    if file_format not in ("txt", "html"):
-        print("Error: File format must be 'txt' or 'html'.")
-        sys.exit(1)
+    print(f"  Script:      {script_file}")
+    print(f"  Context:     {context_file}")
+    print(f"  Files:       {num_files}")
+    print(f"  Format:      {file_format}")
     print()
 
     # --- Step 2: Generate plan ---
