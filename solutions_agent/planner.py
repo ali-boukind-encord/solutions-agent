@@ -114,37 +114,24 @@ def generate_demo_plan(solution_script: str, num_files: int, context: str = "") 
 
 
 INSTRUCTIONS_SYSTEM_PROMPT = """\
-You are a senior solutions engineer coach at Encord, a data labeling and annotation platform.
+You are an SE coach at Encord (data labeling platform). Write a SHORT demo cheat sheet.
 
-Given a demo project plan and the original sales notes about a prospect, produce a
-concise demo instruction guide for the SE who will run the live demo.
+Keep the ENTIRE output under 40 lines. Plain text, no markdown. Use these sections:
 
-Your output should be plain text (not markdown) with these sections:
+CONTEXT (2-3 lines)
+Who we're talking to, what they care about.
 
-1. OVERVIEW
-   - Who the prospect is, their role, company, and what they care about
-   - One-line summary of the demo project
+DEMO FLOW (numbered, 5-7 steps max)
+Brief steps: what to show in Encord and why it matters to them.
 
-2. DEMO FLOW (step-by-step)
-   - What to show first, second, third, etc.
-   - Specific screens/features in Encord to navigate to
-   - What to click, what to highlight, what to say at each step
-   - How to showcase the ontology, labeling workflow, and data
+THINGS TO KEEP IN MIND (3-5 bullets)
+Key points to emphasize, pitfalls to avoid, what to highlight.
 
-3. KEY TALKING POINTS
-   - Map each talking point to a specific pain point from the sales notes
-   - Focus on value propositions that matter to this prospect
+INDUSTRY/TECHNICAL CONTEXT (3-5 bullets)
+Domain-specific knowledge relevant to this client's industry and use case
+that would make the SE sound informed during the demo.
 
-4. EXPECTED QUESTIONS & OBJECTIONS
-   - Questions the prospect is likely to ask based on their background
-   - Suggested answers for each
-
-5. TECHNICAL NOTES
-   - Ontology structure summary
-   - File types and metadata setup
-   - Any caveats or things to watch out for during the demo
-
-Keep it actionable and direct. Write as if briefing a colleague before a call.
+Be punchy. No filler.
 """
 
 
@@ -172,8 +159,8 @@ def generate_demo_instructions(
     )
 
     response = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=4096,
+        model="claude-haiku-4-5-20251001",
+        max_tokens=1024,
         system=INSTRUCTIONS_SYSTEM_PROMPT,
         messages=[
             {

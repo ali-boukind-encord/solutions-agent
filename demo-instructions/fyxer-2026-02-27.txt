@@ -1,169 +1,27 @@
-FYXER - DEMO INSTRUCTION GUIDE
-First Demo | CTO + Head of Human Annotations
-SE Briefing Document
+FYXER EMAIL SORTING & FINE-TUNING DEMO — SE CHEAT SHEET
 
----
+CONTEXT
+Albert (ex-Invisible, Head of Human Annotations) + CTO evaluating platforms for email classification at scale. They're growing 0→$3M ARR with 20 fine-tuning use cases. Currently stuck in Google Sheets. Care about: accuracy, speed, structured data extraction, cost per annotation, and ease of iteration.
 
-1. OVERVIEW
+DEMO FLOW
+1. Open project. Show two real emails (deal opportunity + marketing newsletter). Frame: "These look similar on surface but need different downstream handling."
+2. Classify first email as "Important > Deal/Revenue" + Urgency level. Show nested attributes collapsing/expanding. Emphasize: one click handles complexity instead of multiple spreadsheet columns.
+3. Highlight text-span annotation: select "$47 portfolio companies" as Key Entity (Monetary Value), select "30 minutes this week" as Action Item (Action Owner: Sender). Show this extracts structured data for fine-tuning.
+4. Add "Requires Draft Response > Yes" with nested Tone + Priority. Show how annotation directly feeds their email drafting model.
+5. Capture "Annotator Notes" (text field). Explain: audit trail + training signal for QA.
+6. Flip to second email, classify as "Marketing > Newsletter" + Relevance. Show speed: 60 seconds vs manual sheets.
+7. Close with: "20 use cases, one unified ontology. Scales to 50+ annotators. Integrates with your fine-tuning pipeline via API."
 
-Who you are talking to:
-Albert is the CTO of Fyxer and also runs the annotation workforce as "Head of Human Annotations." He is ex-Invisible Technologies, founder of AI Circle, and is deeply connected across the data annotation space. He knows the competitive landscape inside out, will push on specifics, and will see through anything that is not grounded. Treat him as a technical peer, not a buyer you need to educate from scratch. There is also an Advisor present - read the room on how much they contribute but address them when appropriate.
+THINGS TO KEEP IN MIND
+- Albert knows the annotation space deeply. Don't oversell. Focus on measurable gains: speed per annotation, error reduction (misclassifying deal as spam = lost revenue), QA automation.
+- Emphasize nesting as differentiator: Google Sheets requires separate columns or sheets; we flatten complex logic into one clean interface.
+- Don't get lost in features. Stay on: structured data extraction (emails→JSON), iteration speed, and how this reduces their 20 use-case sprawl.
+- Mention API/export for their fine-tuning pipeline. They care about seamless handoff to model training.
+- Avoid: heavy product walkthrough. This is a working example, not a tutorial.
 
-About Fyxer:
-Fyxer is an AI productivity tool focused on email intelligence for revenue and CSM teams. Their two core fine-tuning use cases are email sorting (marketing vs. important) and email drafting in the user's tone. They have roughly 20 fine-tuning use cases in total. They grew from $0 to $3M ARR in a year. Their current annotation workflow is Google Sheets, manual copy-paste, founder-led QA. They have about 15 annotators today and are growing.
-
-One-line demo summary:
-Show Fyxer how Encord replaces their spreadsheet-based email annotation process with a structured, scalable labeling pipeline - rendering emails natively, enforcing classification hierarchies, enabling entity extraction, and supporting QA - all built around the two workflows they care about most: email sorting and draft response flagging.
-
----
-
-2. DEMO FLOW
-
-STEP 1 - SET THE STAGE (2 minutes)
-Before touching the screen, anchor the demo in their world. Say something like:
-"What I want to show you today mirrors what your annotators are doing right now - taking an email, deciding how to classify it, flagging whether it needs a response, and pulling out key entities. The difference is that instead of a Google Sheet, everything is structured, enforced, and auditable."
-This frames the demo as a workflow replacement, not a product tour.
-
-STEP 2 - SHOW THE DATASET AND FILE RENDERING (5 minutes)
-Navigate to: Encord platform > Datasets > "Fyxer - Email Dataset"
-Show that the two sample emails are loaded: the Acme Corp contract renewal (deal/revenue) and the Productivity Weekly newsletter (marketing).
-Click into the first file and show how the email renders. This is important - Albert specifically called out wanting to see how Encord handles emails in different formats. Walk through the rendering modes:
-- Show the text rendering of the .txt file
-- Explain that Encord supports HTML and PDF rendering as well, and can ingest JSON-structured data
-- Say: "You mentioned JSON specifically - we can work with structured email exports, not just raw text. The rendering adapts to the format."
-Highlight the metadata panel on the side. Even if metadata fields are empty for these demo files, point out where you would surface things like sender, subject line, timestamp - things they are currently tracking in columns in a spreadsheet.
-
-STEP 3 - WALK THROUGH THE ONTOLOGY (8 minutes)
-Navigate to: Ontologies > "Fyxer - Email Classification Ontology"
-This is the heart of the demo. Go slowly here. Albert will appreciate the structure.
-
-Start with the top-level classification:
-"Email Category is the primary label - Important, Marketing, or Spam. This directly maps to your core sorting use case."
-
-Then reveal the nesting. Click into "Important":
-"When an annotator selects Important, two sub-questions automatically appear - Important Subcategory (Deal/Revenue, Customer Support, Partnership, Legal/Compliance) and Priority Level (High, Medium, Low). They cannot skip these - they are required. This is where your current process breaks down in sheets - there is nothing enforcing that an annotator fills in the right detail."
-Pause and let that land. This directly addresses their accuracy and consistency pain.
-
-Click into "Marketing" and show Campaign Type and Engagement Potential.
-Then click into "Spam" and show Spam Confidence with the three-tier scale.
-Say: "The reason we modeled Spam Confidence this way is that your annotators are the ones carrying the cognitive load of ambiguous cases. Rather than letting that ambiguity disappear into a binary label, you capture it. That feeds directly into your QA prioritization - low-confidence labels get reviewed first."
-
-Move to "Requires Draft Response":
-"This is your second major use case - flagging emails that need a drafted reply. If the annotator selects Yes, they are required to specify the tone of response and urgency level. If No, it closes out. This is the kind of structured signal you need to fine-tune a drafting model on user tone - you need labeled examples that go beyond just 'yes draft this.'"
-
-Show "Annotator Confidence" as a standalone classification:
-"This is a quality signal for your QA workflow. Right now Matt is manually reviewing everything. With this field, annotators self-report uncertainty, and you can build a review queue that surfaces only the Low - Needs Review cases automatically."
-
-Show "Additional Notes" as the free-text field:
-"This is the text-type attribute. Annotators can add unstructured context without it polluting your structured labels. It is optional but available."
-
-STEP 4 - SHOW THE TEXT OBJECT AND ENTITY EXTRACTION (6 minutes)
-Navigate to: the labeling editor with the Acme Corp email loaded
-This is where you show the "Key Entity" text object. Highlight a span of text in the email - for example, highlight "March 28th" and assign it as Date/Deadline. Then highlight "$48,000 ACV" and assign it as Monetary Value. Then highlight "Sarah Johnson" and assign it as Person Name.
-Go back and highlight an Action Item - for example "send over the updated contract with the revised pricing by end of day Friday" - and show the nested "Action Owner" attribute appear, where the annotator selects Recipient.
-Say: "This is span-level annotation directly on the email body. Your annotators are not copying and pasting into a sheet - they are working in the document itself. And every entity they tag is structured, exportable, and tied to the specific text it came from."
-This will resonate strongly because structured data extraction from emails is something Albert explicitly flagged.
-
-STEP 5 - SHOW THE LABELING WORKFLOW IN ACTION (5 minutes)
-Load the marketing newsletter email (Productivity Weekly).
-Walk through the classification as if you are an annotator:
-- Select Marketing > Newsletter > Low - Can Archive
-- Select Requires Draft Response > No
-- Select Annotator Confidence > High - Clear Label
-Submit the label.
-Say: "Your annotators do not need to know Encord. The interface presents only the questions relevant to the label they have chosen. There is no blank spreadsheet, no room to miss a column, no inconsistency between annotators."
-Optionally load the deal email and start labeling it to contrast - this one would be Important > Deal/Revenue > High priority, Yes draft response, Formal tone, Reply within 24 hours.
-The contrast between a clean marketing email and a complex deal email shows the ontology doing real work.
-
-STEP 6 - TOUCH ON QA AND WORKFLOW (4 minutes)
-Navigate to: Project settings or QA/Review workflow screen
-Show how labels flow into a review queue. Frame it around Matt's current situation:
-"Right now a founder is doing manual validation. In Encord you can define who reviews what, set consensus requirements across annotators, and surface only the labels flagged as Low Confidence or contested. That is not just faster - it is a fundamentally different workload for your QA person."
-Mention that annotator performance metrics are tracked - this matters to Albert as the person managing the annotation workforce. He can see accuracy rates per annotator, flag underperformers, and iterate on instructions without rebuilding a spreadsheet tracker.
-
-STEP 7 - CLOSE ON SCALE AND STRUCTURE (2 minutes)
-"You have roughly 20 fine-tuning use cases. Each one can have its own ontology, its own project, its own annotator team - but they all live in one platform with consistent export formats and consistent QA logic. When you go from 15 annotators to 50, the workflow does not break. The structure scales with you."
-Do not over-engineer this closing - Albert knows what scale means. Keep it tight.
-
----
-
-3. KEY TALKING POINTS
-
-Pain: Manual Google Sheets process, annotators copy-pasting
-Talking point: In Encord, the email is the working document. Annotators label directly on the content. Nothing is copied anywhere. The structured output is generated automatically from the labels they apply.
-
-Pain: Accuracy issues - wrong classification loses customers (a deal labeled as spam is lost revenue)
-Talking point: The ontology enforces correct behavior. You cannot submit an Important email without specifying subcategory and priority. You cannot leave required fields blank. The structure prevents the exact class of error they are worried about. Show the required field validation.
-
-Pain: Cognitive load on annotators
-Talking point: Conditional nesting means annotators only see what is relevant to their current label. They are not scanning 30 columns in a sheet and guessing which ones apply. The interface guides them through the decision tree.
-
-Pain: Inconsistent validation and founder-led QA is not scalable
-Talking point: Annotator Confidence field + review queue means QA is systematic, not random. Surface the ambiguous cases first, let high-confidence labels pass faster. Matt stops being a bottleneck.
-
-Pain: 20 fine-tuning use cases with no structured system
-Talking point: Each use case gets its own project and ontology. They are independent but managed in one place. You get structure per task without chaos at the portfolio level.
-
-Pain: Scalability beyond 15 annotators
-Talking point: Workforce management, performance tracking, and workflow routing are native to Encord. Albert's annotation team can be onboarded and managed through the platform, not through ad hoc coordination.
-
-Pain: Structured data extraction from emails specifically
-Talking point: The Key Entity text object with nested attributes gives them span-level extraction tied to the document. Combined with JSON ingestion support, this is a proper extraction pipeline, not a workaround.
-
----
-
-4. EXPECTED QUESTIONS AND OBJECTIONS
-
-Q: How do you handle JSON email data specifically?
-A: Encord can ingest JSON-structured data and render the relevant content fields in the labeling interface. You point the platform at the fields that contain the email body and metadata, and annotators work on that rendered content. This is worth following up with a technical deep-dive if needed - do not overpromise on the exact JSON parsing UI in this demo, but confirm the capability is real and offer a follow-up.
-
-Q: Can we build our own ontologies from scratch or are we locked into templates?
-A: Fully configurable. What you saw today was built specifically for Fyxer's use cases. Every attribute, nesting level, and option is defined by you. You can iterate on ontologies as your fine-tuning use cases evolve.
-
-Q: How do you handle inter-annotator agreement across 15+ annotators?
-A: Encord has consensus labeling - you can require multiple annotators to label the same item and flag disagreements automatically. Combined with the Annotator Confidence signal, you get both objective disagreement detection and subjective uncertainty flagging.
-
-Q: What does the export look like? Can we use it directly for fine-tuning?
-A: Labels export in structured JSON with full provenance - which annotator, what timestamp, every attribute value, and the span coordinates for text entities. This is directly usable as training data. If they have a specific fine-tuning framework or format in mind, note it and follow up with a sample export.
-
-Q: How does this compare to [competitor they are evaluating]?
-A: Do not get drawn into a feature checklist battle. Redirect to workflow: "The question we would ask is whether the other platforms let you model this level of conditional logic natively in the labeling interface, or whether you are patching it together with instructions and hoping annotators follow them. The structure is the quality control." If Albert presses for specifics, be honest about what you know and what you do not.
-
-Q: What does pricing look like for our volume?
-A: This is a low-volume, high-complexity use case with ~20 projects and a growing annotator team. Flag this for your AE to handle and do not quote numbers in the demo. Say: "Given your setup - multiple fine-tuning projects, a managed annotator workforce, structured QA - we would want to model the right package for you. Let me get our AE to follow up on that specifically."
-
-Q: Can we bring our own annotators or do we have to use Encord's workforce?
-A: Albert runs his own annotator team. Confirm clearly: yes, they can use their own annotators. Encord is the platform; the workforce is theirs to manage. Encord also has access to a managed workforce if they ever want to scale externally, but it is not required.
-
-Q: You mentioned HTML and PDF rendering - can you show that right now?
-A: If you have sample HTML or PDF email files ready, show them. If not, be honest: "We do not have those file types loaded in this demo project, but I can show you a quick example in another project or send you a recorded walkthrough after this call." Do not fake it.
-
----
-
-5. TECHNICAL NOTES
-
-Ontology structure summary:
-The ontology is text-type throughout, which matches the requirement. There are four classifications and one object type.
-
-Classifications:
-- Email Category (radio, required) with three-level nesting: Important has subcategory and priority; Marketing has campaign type and engagement potential; Spam has confidence level
-- Requires Draft Response (radio, required) with nesting under Yes: tone and urgency
-- Annotator Confidence (radio, required) - flat, three options
-- Additional Notes (text, optional) - this is your text-type attribute, make sure to point this out explicitly as it satisfies the text type requirement
-
-Object:
-- Key Entity (text shape) with Entity Type radio attribute, and Action Item option carries a nested Action Owner sub-attribute. This is your span-level text annotation. Make sure the labeling editor is in text mode and you are able to click and drag to highlight spans before the call.
-
-File types in demo:
-Both files are .txt format. This is intentional for simplicity but be ready to explain that HTML, PDF, and JSON-structured email content are also supported. If Albert asks to see HTML rendering specifically, be honest about what is preloaded and offer a follow-up.
-
-Metadata:
-Metadata fields are empty in the demo files. This is fine for the demo but call out that in production they would populate these with sender, recipient, subject, date, and any other fields from their email pipeline. This replaces the metadata columns they currently manage in spreadsheets.
-
-Things to watch out for:
-- Albert knows this space. Do not pad the demo or stall. If you do not know an answer, say so and follow up.
-- He is evaluating multiple vendors. Competitive positioning matters but do not get dragged into a features war. Stay on workflow value.
-- The advisor in the room runs the annotator workforce commercially. If he asks about workforce management features or annotator performance reporting, lean into it - that is directly relevant to his business.
-- Do not oversell JSON support without knowing the exact current state of that feature. Flag it as supported, offer a technical follow-up if he wants to go deep.
-- Make sure the labeling editor loads cleanly with the email text visible and selectable before the call starts. Test the span annotation flow on the Acme email specifically.
-- Keep the demo under 30 minutes of screen time. Albert is business-minded and will respect a tight, focused demo over a comprehensive product tour.
+INDUSTRY/TECHNICAL CONTEXT
+- Email classification for CSM/revenue ops is high-stakes: wrong categorization = lost deals, unhappy customers, churn.
+- Fine-tuning LLMs on domain-specific email tone requires clean, labeled data. Annotation errors compound at scale.
+- Structured extraction (entities: names, amounts, deadlines; actions: owner, due date) is non-negotiable for email automation use cases.
+- Their prior embeddings initiative failed; they're now pivoting to traditional supervised fine-tuning. Show Encord supports that workflow cleanly.
+- Google Sheets at 50+ annotators = collaboration chaos, no versioning, no QA workflow. Position Encord as purpose-built for this.
