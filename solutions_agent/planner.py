@@ -111,3 +111,76 @@ def generate_demo_plan(solution_script: str, num_files: int, context: str = "") 
         )
 
     return plan
+
+
+INSTRUCTIONS_SYSTEM_PROMPT = """\
+You are a senior solutions engineer coach at Encord, a data labeling and annotation platform.
+
+Given a demo project plan and the original sales notes about a prospect, produce a
+concise demo instruction guide for the SE who will run the live demo.
+
+Your output should be plain text (not markdown) with these sections:
+
+1. OVERVIEW
+   - Who the prospect is, their role, company, and what they care about
+   - One-line summary of the demo project
+
+2. DEMO FLOW (step-by-step)
+   - What to show first, second, third, etc.
+   - Specific screens/features in Encord to navigate to
+   - What to click, what to highlight, what to say at each step
+   - How to showcase the ontology, labeling workflow, and data
+
+3. KEY TALKING POINTS
+   - Map each talking point to a specific pain point from the sales notes
+   - Focus on value propositions that matter to this prospect
+
+4. EXPECTED QUESTIONS & OBJECTIONS
+   - Questions the prospect is likely to ask based on their background
+   - Suggested answers for each
+
+5. TECHNICAL NOTES
+   - Ontology structure summary
+   - File types and metadata setup
+   - Any caveats or things to watch out for during the demo
+
+Keep it actionable and direct. Write as if briefing a colleague before a call.
+"""
+
+
+def generate_demo_instructions(
+    plan: DemoPlan, solution_script: str, context: str = ""
+) -> str:
+    """Generate demo instructions for the SE based on the plan and solution script."""
+    client = anthropic.Anthropic()
+
+    plan_summary = plan.model_dump_json(indent=2)
+
+    user_message = (
+        f"Here is the original solution script:\n\n"
+        f"---\n{solution_script}\n---\n\n"
+    )
+    if context:
+        user_message += (
+            f"Additional context:\n\n"
+            f"---\n{context}\n---\n\n"
+        )
+    user_message += (
+        f"Here is the demo project plan that was created:\n\n"
+        f"---\n{plan_summary}\n---\n\n"
+        f"Generate the demo instruction guide for the SE."
+    )
+
+    response = client.messages.create(
+        model="claude-sonnet-4-6",
+        max_tokens=4096,
+        system=INSTRUCTIONS_SYSTEM_PROMPT,
+        messages=[
+            {
+                "role": "user",
+                "content": user_message,
+            }
+        ],
+    )
+
+    return response.content[0].text

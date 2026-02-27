@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import date
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -192,6 +193,21 @@ def main() -> None:
 
     result = execute_plan(plan, on_status=lambda msg: print(f"  {msg}"))
 
+    # --- Step 6: Generate demo instructions ---
+    print()
+    from .planner import generate_demo_instructions
+
+    print("  Generating demo instructions...")
+    instructions = generate_demo_instructions(plan, solution_script, context)
+
+    # Extract company name from project name (e.g. "Fyxer - Email Sorting Demo" -> "fyxer")
+    company = plan.naming.project_name.split(" - ")[0].strip().lower().replace(" ", "-")
+    instructions_dir = Path("demo-instructions")
+    instructions_dir.mkdir(exist_ok=True)
+    instructions_filename = f"{company}-{date.today().isoformat()}.txt"
+    instructions_path = instructions_dir / instructions_filename
+    instructions_path.write_text(instructions, encoding="utf-8")
+
     print()
     print("=" * 60)
     print("  Demo project created successfully!")
@@ -201,4 +217,5 @@ def main() -> None:
     print(f"  Dataset hash:   {result.dataset_hash}")
     print(f"  Ontology hash:  {result.ontology_hash}")
     print(f"  Files uploaded: {result.files_uploaded}")
+    print(f"  Instructions:   {instructions_path}")
     print("=" * 60)
