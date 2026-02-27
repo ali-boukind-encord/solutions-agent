@@ -37,7 +37,7 @@ def _print_plan_preview(plan) -> None:
         f"Project:   {plan.naming.project_name}",
         f"Dataset:   {plan.naming.dataset_name}",
         f"Ontology:  {plan.naming.ontology_name}",
-        f"Files:     {len(plan.synthetic_files)} synthetic .txt files",
+        f"Files:     {len(plan.synthetic_files)} synthetic .{plan.synthetic_files[0].filename.rsplit('.', 1)[-1] if plan.synthetic_files else 'txt'} files",
         "",
         f"Summary:   {plan.summary}",
     ]
@@ -161,13 +161,20 @@ def main() -> None:
         sys.exit(1)
     print()
 
+    file_format_str = input("File format - txt or html [txt]: ").strip().lower()
+    file_format = file_format_str if file_format_str else "txt"
+    if file_format not in ("txt", "html"):
+        print("Error: File format must be 'txt' or 'html'.")
+        sys.exit(1)
+    print()
+
     # --- Step 2: Generate plan ---
     from .planner import generate_demo_plan
 
     print("Analyzing solution script and generating demo plan...")
     print("(This may take 15-30 seconds)\n")
 
-    plan = generate_demo_plan(solution_script, num_files, context=context)
+    plan = generate_demo_plan(solution_script, num_files, context=context, file_format=file_format)
 
     # --- Step 3: Rich confirmation preview ---
     _print_plan_preview(plan)
@@ -182,7 +189,7 @@ def main() -> None:
             sys.exit(0)
         elif choice in ("r", "regenerate"):
             print("\nRegenerating plan...\n")
-            plan = generate_demo_plan(solution_script, num_files, context=context)
+            plan = generate_demo_plan(solution_script, num_files, context=context, file_format=file_format)
             _print_plan_preview(plan)
         else:
             print("Please enter Y, n, or regenerate.")

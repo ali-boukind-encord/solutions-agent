@@ -9,7 +9,7 @@ class SyntheticFile(BaseModel):
     """A single synthetic data file to be created and uploaded."""
 
     filename: str = Field(
-        description="Filename with .txt extension, e.g. 'marketing_email_001.txt'"
+        description="Filename with .txt or .html extension, e.g. 'marketing_email_001.txt' or 'marketing_email_001.html'"
     )
     content: str = Field(description="Full text content of the synthetic file")
     metadata: dict[str, str] = Field(

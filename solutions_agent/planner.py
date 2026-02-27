@@ -42,10 +42,15 @@ a complete demo project plan. Your output must include:
    tasks, use objects. Many use cases need both. Use nested attributes when the
    labeling task has conditional/hierarchical categories.
 
-3. SYNTHETIC FILES: Generate realistic synthetic .txt files that represent the
-   data modality described. Each file should:
-   - Have a descriptive filename (snake_case, .txt extension)
+3. SYNTHETIC FILES: Generate realistic synthetic files that represent the
+   data modality described. The file format will be specified in the user message
+   (either .txt plain text or .html). Each file should:
+   - Have a descriptive filename (snake_case, with the specified extension)
    - Contain realistic content (150-400 words) that a human could plausibly annotate
+   - For .html files: use proper HTML structure with <html>, <head>, <body> tags,
+     and use semantic HTML elements (headings, paragraphs, lists, tables, etc.)
+     to make the content realistic and visually structured
+   - For .txt files: use plain text content
    - Vary across the classification/object options so the demo showcases all labels
    - Include metadata with a 'category' key indicating the ground truth label
 
@@ -56,7 +61,9 @@ demonstrate the labeling workflow to a prospect during a live demo.
 """
 
 
-def generate_demo_plan(solution_script: str, num_files: int, context: str = "") -> DemoPlan:
+def generate_demo_plan(
+    solution_script: str, num_files: int, context: str = "", file_format: str = "txt"
+) -> DemoPlan:
     """Parse a solution script and generate a complete demo plan.
 
     Makes a single Claude API call with structured outputs to produce
@@ -66,6 +73,7 @@ def generate_demo_plan(solution_script: str, num_files: int, context: str = "") 
         solution_script: Raw text of the sales solution script.
         num_files: Number of synthetic files to generate.
         context: Optional additional context to inform the plan.
+        file_format: File format for synthetic files ('txt' or 'html').
 
     Returns:
         A fully populated DemoPlan ready for execution.
@@ -87,7 +95,7 @@ def generate_demo_plan(solution_script: str, num_files: int, context: str = "") 
         )
     user_message += (
         f"Generate a complete demo project plan with exactly "
-        f"{num_files} synthetic .txt files."
+        f"{num_files} synthetic .{file_format} files."
     )
 
     response = client.messages.parse(

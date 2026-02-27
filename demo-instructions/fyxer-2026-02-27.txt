@@ -1,27 +1,25 @@
-FYXER EMAIL SORTING & FINE-TUNING DEMO — SE CHEAT SHEET
-
 CONTEXT
-Albert (ex-Invisible, Head of Human Annotations) + CTO evaluating platforms for email classification at scale. They're growing 0→$3M ARR with 20 fine-tuning use cases. Currently stuck in Google Sheets. Care about: accuracy, speed, structured data extraction, cost per annotation, and ease of iteration.
+Fyxer CTO & Head of Human Annotations. They're scaling from 0-$3M ARR, drowning in manual Google Sheets annotation (20 fine-tuning use cases). One misclassified email costs them customers. They need speed, accuracy, structure—fast.
 
 DEMO FLOW
-1. Open project. Show two real emails (deal opportunity + marketing newsletter). Frame: "These look similar on surface but need different downstream handling."
-2. Classify first email as "Important > Deal/Revenue" + Urgency level. Show nested attributes collapsing/expanding. Emphasize: one click handles complexity instead of multiple spreadsheet columns.
-3. Highlight text-span annotation: select "$47 portfolio companies" as Key Entity (Monetary Value), select "30 minutes this week" as Action Item (Action Owner: Sender). Show this extracts structured data for fine-tuning.
-4. Add "Requires Draft Response > Yes" with nested Tone + Priority. Show how annotation directly feeds their email drafting model.
-5. Capture "Annotator Notes" (text field). Explain: audit trail + training signal for QA.
-6. Flip to second email, classify as "Marketing > Newsletter" + Relevance. Show speed: 60 seconds vs manual sheets.
-7. Close with: "20 use cases, one unified ontology. Scales to 50+ annotators. Integrates with your fine-tuning pipeline via API."
+1. Load the Fyxer demo project. Show the two sample emails (deal opportunity HTML + marketing promo) to establish relevance immediately.
+2. Render one email in HTML view, then toggle to text/PDF—demonstrate Encord handles all email formats they receive, no copy-paste needed.
+3. Walk the Email Category classification: show how selecting "Important" reveals nested attributes (Type, Urgency, Requires Reply). Emphasize this replaces their chaotic spreadsheet logic.
+4. Highlight the Key Entity text object—show tagging a person ($48K deal mention, dates, monetary values). Explain this feeds fine-tuning datasets automatically.
+5. Complete annotation on deal email. Show "Annotator Notes" (free text) for edge cases. Stress: one QA pass, no validation spreadsheet.
+6. Compare: "In Sheets, this took 8 minutes and lives in 5 places. Here, it's structured, exportable as JSON, and ready for model training."
+7. Close on workflow impact: 15+ annotators → Encord scales. No cognitive load. Consistent taxonomy.
 
 THINGS TO KEEP IN MIND
-- Albert knows the annotation space deeply. Don't oversell. Focus on measurable gains: speed per annotation, error reduction (misclassifying deal as spam = lost revenue), QA automation.
-- Emphasize nesting as differentiator: Google Sheets requires separate columns or sheets; we flatten complex logic into one clean interface.
-- Don't get lost in features. Stay on: structured data extraction (emails→JSON), iteration speed, and how this reduces their 20 use-case sprawl.
-- Mention API/export for their fine-tuning pipeline. They care about seamless handoff to model training.
-- Avoid: heavy product walkthrough. This is a working example, not a tutorial.
+- Albert knows the annotation space well; acknowledge competitive features (ease, speed, structured extraction) without defensive language.
+- Nesting is your superpower here—show how it mirrors decision trees they already use mentally, just captured cleanly.
+- Emphasize JSON export and fine-tuning readiness. They care about downstream model performance, not UI prettiness.
+- Don't overcomplicate. Fyxer is shipping fast; show speed of task setup and annotation, not advanced features.
+- One email should be completed in under 3 minutes to prove efficiency vs. Sheets.
 
 INDUSTRY/TECHNICAL CONTEXT
-- Email classification for CSM/revenue ops is high-stakes: wrong categorization = lost deals, unhappy customers, churn.
-- Fine-tuning LLMs on domain-specific email tone requires clean, labeled data. Annotation errors compound at scale.
-- Structured extraction (entities: names, amounts, deadlines; actions: owner, due date) is non-negotiable for email automation use cases.
-- Their prior embeddings initiative failed; they're now pivoting to traditional supervised fine-tuning. Show Encord supports that workflow cleanly.
-- Google Sheets at 50+ annotators = collaboration chaos, no versioning, no QA workflow. Position Encord as purpose-built for this.
+- Email classification for CSM/revenue teams is high-stakes: revenue leakage from misclassification is quantified ($48K example in email).
+- Fine-tuning workflows benefit from nested, multi-label structure; flat taxonomies lose signal. Encord's ontology mirrors their mental models.
+- They're building tone-aware reply drafting, so capturing tone classification and quality signals feeds that training loop.
+- Structured data extraction (entities, dates, amounts) is their stated gap vs. competitors; text objects solve this without forcing bounding boxes.
+- JSON/structured export is non-negotiable for downstream fine-tuning pipelines; emphasize deterministic output and no manual translation.
