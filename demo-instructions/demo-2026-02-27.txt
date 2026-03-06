@@ -1,0 +1,24 @@
+CONTEXT
+Prospect is labeling text documents (news, legal, academic, marketing). They need to understand how Encord handles text annotations with nested classifications and span-level labeling. They care about workflow efficiency and ontology flexibility.
+
+DEMO FLOW
+1. Load the 5 HTML documents. Show how Encord renders text content naturally without conversion hassle.
+2. Walk through document-level classification: select "News Article" for tech_news file, then trigger nested "News Subcategory" → pick "Technology". Show cascading attributes.
+3. Add secondary classifications (Sentiment, Language, Content Tags) to same document. Highlight multi-attribute workflow.
+4. Switch to span annotation. Highlight a phrase like "Responsible AI Deployment Act" as Named Entity → set type to "Product".
+5. Highlight another phrase as Key Phrase → set type "Claim" → reveal nested "Claim Strength" dropdown. Show nesting works at span level too.
+6. Bulk-classify another document to show speed. End on dashboard showing annotation progress and coverage by classification type.
+
+THINGS TO KEEP IN MIND
+- Emphasize nested attributes trigger only when parent option selected; avoids UI clutter
+- Text selection in browser may feel sluggish on first try; demo smoothly, don't fumble
+- Show checklist vs radio difference (Content Tags is optional, multi-select; others are required, single-select)
+- Mention each document already has realistic metadata; labelers won't be confused by dummy text
+- Keep focus on ontology flexibility, not raw speed; this prospect values structure over throughput
+
+INDUSTRY/TECHNICAL CONTEXT
+- Text annotation demand rising in compliance, legal discovery, content moderation, market research
+- Nested classifications reduce labeler error by constraining choices; e.g., "News Article" only shows relevant subcategories
+- Named entity + span attributes common in NLP pipelines (training data for transformers, LLMs, NER models)
+- Multi-document batching needed for cost control; show how Encord queues and tracks annotation per file
+- Regulatory docs (legal_terms file) often require both document classification and clause-level span tagging for audit trails

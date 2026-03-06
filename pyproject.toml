@@ -12,7 +12,10 @@ dependencies = [
     "encord>=0.1.130",
     "pydantic>=2.0",
     "python-dotenv>=1.0.0",
+    "slack-bolt>=1.18.0",
+    "slack-sdk>=3.27.0",
 ]
 
 [project.scripts]
 solutions-agent = "solutions_agent.main:main"
+solutions-agent-slack = "solutions_agent.slack_bot:main"

@@ -1,0 +1,30 @@
+CONTEXT
+Explorance: SaaS survey platform managing open-text academic/enterprise feedback. Alexis (Director AI/ML) and Melody (Manager) evaluating text labeling platforms to replace Label Studio before April renewal. Pain: overpaying for multimodal features they don't use; want cost-effective, text-focused solution with strong annotator analytics and workflow flexibility.
+
+DEMO FLOW
+1. Load the project: "Explorance - Survey Text Classification Demo" with hierarchical taxonomy showing Topic Category (5 main topics with nested sub-topics). Emphasize this proves we handle complex hierarchies like their current setup.
+
+2. Show sample survey response (teaching positive example). Walk through the annotation UI: Topic Category radio → nested sub-topic auto-appears. Highlight clean UX vs. Label Studio complaints.
+
+3. Demonstrate Sentiment Polarity (radio) + Emotion Attribute (checklist) on same response. Show how multi-level classification works without UI bloat. Point out text objects: Key Phrase, Actionable Feedback, Entity Mention with their own attributes.
+
+4. Show LLM Pre-Label Validation workflow: Accept/Reject with nested confidence/reason fields. Explain how this supports their new AI-first binary validation approach while legacy hierarchies remain available.
+
+5. Jump to Annotator Analytics dashboard. Show team performance metrics, consensus/agreement matrices between annotators, per-person accuracy tracking. Emphasize granularity they lack in Label Studio.
+
+6. Briefly show dataset management and user assignment. Mention SSO/SOC2 availability for enterprise security.
+
+THINGS TO KEEP IN MIND
+- Lead with cost efficiency and text-only focus; don't oversell multimodal.
+- Spend 30% of time on Analytics dashboard — this is the key differentiator they care about.
+- Validate that nested taxonomy works: "Your old hierarchical graph structure is fully supported during transition."
+- When showing LLM validation: frame it as "binary validation of hard cases" (their language, not ours).
+- Avoid technical jargon; keep pace conversational and discovery-driven.
+- Data format unknown—don't commit. Say "We support CSVs, JSONLines, and API ingestion; let's confirm your export format in discovery."
+
+INDUSTRY/TECHNICAL CONTEXT
+- Academic survey feedback is sensitive: SSO/SOC2 compliance is table-stakes, not nice-to-have.
+- Explorance uses Blue (customer surveys) and MLe (multi-language); prepare for multi-language tagging questions.
+- Transition from hierarchical multi-label to LLM pre-label is a workflow modernization play; they're risk-averse on this shift—show stability.
+- Annotator consensus metrics are critical for survey data quality validation across distributed university/enterprise teams.
+- Text span annotation (Key Phrase, Actionable Feedback) enables downstream action prioritization in their platform.
